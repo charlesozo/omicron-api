@@ -143,11 +143,10 @@ func (q *Queries) UpdateApiKey(ctx context.Context, arg UpdateApiKeyParams) erro
 	return err
 }
 
-const updatepassword = `-- name: Updatepassword :one
+const updatepassword = `-- name: Updatepassword :exec
 UPDATE Registeredusers
 SET password = $1,  updated_at = $2, updated_password = $3
 WHERE id = $4
-RETURNING id, username, created_at, updated_at, email, isemailverified, verified_at, password, whatsapp_number, loggedin, apikey, updated_username, updated_password
 `
 
 type UpdatepasswordParams struct {
@@ -157,30 +156,14 @@ type UpdatepasswordParams struct {
 	ID              uuid.UUID
 }
 
-func (q *Queries) Updatepassword(ctx context.Context, arg UpdatepasswordParams) (Registereduser, error) {
-	row := q.db.QueryRowContext(ctx, updatepassword,
+func (q *Queries) Updatepassword(ctx context.Context, arg UpdatepasswordParams) error {
+	_, err := q.db.ExecContext(ctx, updatepassword,
 		arg.Password,
 		arg.UpdatedAt,
 		arg.UpdatedPassword,
 		arg.ID,
 	)
-	var i Registereduser
-	err := row.Scan(
-		&i.ID,
-		&i.Username,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.Email,
-		&i.Isemailverified,
-		&i.VerifiedAt,
-		&i.Password,
-		&i.WhatsappNumber,
-		&i.Loggedin,
-		&i.Apikey,
-		&i.UpdatedUsername,
-		&i.UpdatedPassword,
-	)
-	return i, err
+	return err
 }
 
 const updateusername = `-- name: Updateusername :one

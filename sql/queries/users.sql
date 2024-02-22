@@ -27,11 +27,11 @@ SET username = $1, updated_at = $2, updated_username = $3
 WHERE id = $4
 RETURNING *;
 
--- name: Updatepassword :one
+-- name: Updatepassword :exec
 UPDATE Registeredusers
 SET password = $1,  updated_at = $2, updated_password = $3
-WHERE id = $4
-RETURNING *;
+WHERE id = $4;
+
 
 -- name: DeleteUserDetail :exec
 DELETE FROM RegisteredUsers

@@ -5,8 +5,8 @@ RETURNING *;
 --
 -- name: InputPlan :exec
 INSERT INTO Plan (plan_name, description, price, duration_days) VALUES
-('Monthly Plan', 'Unlock premium access for one month.', 7.00, 30),
-('Annual Plan', 'Unlock premium access for one year at a discounted rate.', 50.00, 365);
+('Monthly Plan', 'Unlock premium access for one month.', 6.99, 30),
+('Annual Plan', 'Unlock premium access for one year at a discounted rate.', 71.99, 365);
 --
 -- name: PaymentSetup :one
 INSERT INTO Payment (payment_id, userid, amount, plan_id, payment_date, expiry_date, payment_method)

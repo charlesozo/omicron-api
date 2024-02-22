@@ -56,7 +56,7 @@ func (cfg *ApiConfig) handleUpdateOldPassword(w http.ResponseWriter, r *http.Req
 		respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Error unmarshalling json, %v", err))
 		return
 	}
-	updatedUser, err := cfg.DB.Updatepassword(r.Context(), database.UpdatepasswordParams{
+	err = cfg.DB.Updatepassword(r.Context(), database.UpdatepasswordParams{
 		Password:        params.Password,
 		UpdatedAt:       time.Now().UTC(),
 		UpdatedPassword: sql.NullBool{Bool: true, Valid: true},
@@ -66,5 +66,5 @@ func (cfg *ApiConfig) handleUpdateOldPassword(w http.ResponseWriter, r *http.Req
 		respondWithError(w, http.StatusInternalServerError, "error updating password")
 		return
 	}
-	respondWithJSON(w, http.StatusOK, dbRegUserToRegUser(updatedUser))
+	respondWithJSON(w, http.StatusOK, "updated user password")
 }

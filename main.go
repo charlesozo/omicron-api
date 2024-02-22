@@ -8,6 +8,7 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
+	"time"
 )
 
 type ApiConfig struct {
@@ -45,13 +46,14 @@ func main() {
 	v1Router.Post("/check_password", cfg.MiddleWareAuth(cfg.checkOldPassword))
 	v1Router.Post("/update_password", cfg.MiddleWareAuth(cfg.handleUpdateOldPassword))
 	v1Router.Post("/forgot_password", cfg.handleForgotPassword)
-
 	router.Mount("/api/v1", v1Router)
 	server := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
-		Timeout: 
+
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
+
 	log.Printf("Server started at port %s", port)
 	log.Fatal(server.ListenAndServe())
 }
